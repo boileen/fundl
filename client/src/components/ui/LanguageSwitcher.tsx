@@ -1,0 +1,62 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { cx } from '@/lib/cx'
+import { setLocale } from '@/lib/i18n'
+import { Icon } from '@/components/ui/icons'
+import { LOCALES } from '@/config/locales'
+
+/**
+ * Flag-less language pill: EN · PCM · HA · YO · IG — text only,
+ * since the languages don't map to national flags. Persists to
+ * localStorage now; DB-backed `users.locale` comes with the API.
+ */
+
+export function LanguageSwitcher({ className }: { className?: string }) {
+  const { i18n } = useTranslation()
+  const [open, setOpen] = useState(false)
+
+  const current =
+    LOCALES.find((l) => i18n.resolvedLanguage?.toLowerCase() === l.code)?.label ?? 'PCM'
+
+  return (
+    <div className={cx('relative', className)}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="stamp stamp--neutral cursor-pointer"
+      >
+        <Icon name="menu" size={13} />
+        {current}
+      </button>
+
+      {open && (
+        <div
+          role="listbox"
+          aria-label="Language"
+          className="panel absolute right-0 top-[calc(100%+8px)] z-40 flex min-w-30 flex-col overflow-hidden py-1"
+        >
+          {LOCALES.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              role="option"
+              aria-selected={current === l.label}
+              onClick={() => {
+                setLocale(l.code)
+                setOpen(false)
+              }}
+              className={cx(
+                'px-4 py-2 text-left text-xs font-extrabold uppercase text-black tracking-wider hover:bg-wall',
+                current === l.label && 'bg-wall text-blue',
+              )}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}

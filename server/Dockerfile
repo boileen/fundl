@@ -22,4 +22,4 @@ COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/server ./server
 EXPOSE 4000
-CMD ["node", "server/dist/index.js"]
+CMD ["sh", "-c", "cd server && npx prisma migrate deploy && node dist/index.js"]

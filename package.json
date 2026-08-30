@@ -2,6 +2,7 @@
   "name": "fundi",
   "private": true,
   "version": "0.0.0",
+  "packageManager": "pnpm@11.24.0",
   "scripts": {
     "dev": "pnpm --filter client dev",
     "dev:server": "pnpm --filter server dev",

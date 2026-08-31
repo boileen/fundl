@@ -19,7 +19,7 @@ export function CategoryPicker({ categories, value, onChange, disabled }: Catego
   const { t } = useTranslation()
 
   if (categories.length === 0) {
-    return <LoadingState label="postJob.loadingCategories" className="py-2" />
+    return <LoadingState label={t('postJob.loadingCategories')} className="py-2" />
   }
 
   return (
